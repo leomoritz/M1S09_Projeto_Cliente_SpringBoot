@@ -7,34 +7,43 @@ import lombok.*;
 import java.util.Objects;
 
 @RequiredArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-public class Account implements Comparable<Account>{
+public class Account implements Comparable<Account> {
 
     private Integer id = UtilGeradorId.generateSequenceIdAccount();
 
     @NonNull
-    private final Customer customer;
+    private Customer customer;
 
     @NonNull
     private AccountType accountType;
 
     private Double balance = 0.0;
 
-    public boolean withdraw(Double value){
-        if(value > 0.0 && value <= this.balance){
+    public boolean withdraw(Double value) {
+        if (value > 0.0 && value <= this.balance) {
             this.balance -= value;
             return true;
         }
         return false;
     }
 
-    public boolean deposit(Double value){
-        if(value > 0.0){
+    public boolean deposit(Double value) {
+        if (value > 0.0) {
             this.balance += value;
             return true;
         }
         return false;
+    }
+
+    public boolean transferValueToOtherAccount(Account destinyAccount, Double value) {
+        if (!withdraw(value)) {
+            return false;
+        }
+
+        return destinyAccount.deposit(value);
     }
 
     @Override

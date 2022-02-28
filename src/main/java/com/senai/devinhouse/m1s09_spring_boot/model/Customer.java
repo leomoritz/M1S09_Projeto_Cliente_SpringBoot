@@ -6,6 +6,7 @@ import lombok.*;
 import java.util.Objects;
 
 @RequiredArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class Customer implements Comparable<Customer>{

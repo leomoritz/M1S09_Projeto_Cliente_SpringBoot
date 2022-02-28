@@ -16,7 +16,6 @@ public class AccountService implements CrudService<Account> {
         this.repository = repository;
     }
 
-
     @Override
     public boolean create(Account account) {
         return repository.create(account);
@@ -41,4 +40,5 @@ public class AccountService implements CrudService<Account> {
     public boolean delete(Integer id) {
         return repository.delete(id);
     }
+
 }
