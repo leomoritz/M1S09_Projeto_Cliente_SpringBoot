@@ -20,14 +20,28 @@ public class CustomerController {
         return service.findAll();
     }
 
-    @GetMapping("/getCustomerById{id}")
-    public Customer getCustomerById(@PathVariable Integer id){
-       return service.findById(id).get();
+    @GetMapping("/getCustomerById/{id}")
+    public Customer getCustomerById(@PathVariable Integer id) throws Exception {
+        if(service.findById(id).isPresent()){
+            return service.findById(id).get();
+        }
+        throw new Exception("Customer not found");
     }
 
     @PostMapping("/registerCustomer")
     public boolean registerCustomer(@RequestBody Customer customer){
         return service.create(customer);
     }
+
+    @PutMapping("/updateCustomerById/{id}")
+    public boolean updateCustomerById(@PathVariable Integer id, @RequestBody Customer customer){
+        return service.update(id, customer);
+    }
+
+    @DeleteMapping("/deleteCustomerById/{id}")
+    public boolean deleteCustomerById(@PathVariable Integer id){
+        return service.delete(id);
+    }
+
 
 }
