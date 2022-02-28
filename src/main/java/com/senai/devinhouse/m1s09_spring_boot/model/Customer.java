@@ -3,6 +3,8 @@ package com.senai.devinhouse.m1s09_spring_boot.model;
 import com.senai.devinhouse.m1s09_spring_boot.utils.UtilGeradorId;
 import lombok.*;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @RequiredArgsConstructor

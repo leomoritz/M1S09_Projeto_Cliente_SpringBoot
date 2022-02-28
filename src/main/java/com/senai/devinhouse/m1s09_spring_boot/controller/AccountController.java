@@ -1,18 +1,14 @@
 package com.senai.devinhouse.m1s09_spring_boot.controller;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.senai.devinhouse.m1s09_spring_boot.model.Account;
 import com.senai.devinhouse.m1s09_spring_boot.service.CrudService;
-import org.springframework.context.annotation.ScopedProxyMode;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.annotation.RequestScope;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.net.UnknownServiceException;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -28,21 +24,20 @@ public class AccountController {
 
     /*CRUD*/
     @GetMapping("/getAccountList")
-    public Set<Account> getAccountList() {
-        return service.findAll();
+    public ResponseEntity<Set<Account>> getAccountList() {
+        return ResponseEntity.ok().body(service.findAll());
     }
 
     @GetMapping("/getAccountById/{id}")
-    public Account getAccountById(@PathVariable Integer id) throws Exception {
-        if (service.findById(id).isPresent()) {
-            return service.findById(id).get();
-        }
-        throw new Exception("Account not found");
+    public ResponseEntity<Account> getAccountById(@PathVariable Integer id) throws Exception {
+       return ResponseEntity.ok().body(service.findById(id).get());
     }
 
-    @PostMapping("/registerAccount")
-    public boolean registerAccount(@RequestBody Account account) {
-        return service.create(account);
+    @PostMapping("registerAccount")
+    public ResponseEntity<String> registerAccount(@RequestBody @Valid Account account, UriComponentsBuilder uriBuilder) {
+        Account newAccount = service.create(account);
+        URI uri = uriBuilder.path("/registerAccount").buildAndExpand(newAccount).toUri();
+        return ResponseEntity.created(uri).body("\"id\":" + "\"" + newAccount.getId() + "\"");
     }
 
     @PutMapping("/updateAccountById/{id}")

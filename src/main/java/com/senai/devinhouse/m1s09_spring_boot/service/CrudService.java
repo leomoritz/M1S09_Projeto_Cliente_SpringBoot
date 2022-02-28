@@ -6,7 +6,7 @@ import java.util.Set;
 public interface CrudService<T> {
 
     //Create
-    public boolean create(T t);
+    public T create(T t);
     //Read
     public Set<T> findAll();
     public Optional<T> findById(Integer id);

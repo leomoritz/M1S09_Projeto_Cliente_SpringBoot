@@ -17,8 +17,11 @@ public class AccountService implements CrudService<Account> {
     }
 
     @Override
-    public boolean create(Account account) {
-        return repository.create(account);
+    public Account create(Account account) {
+        if(repository.create(account)){
+            return account;
+        }
+        return null;
     }
 
     @Override

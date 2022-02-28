@@ -17,8 +17,11 @@ public class CustomerService implements CrudService<Customer> {
     }
 
     @Override
-    public boolean create(Customer customer) {
-        return repository.create(customer);
+    public Customer create(Customer customer) {
+        if(!repository.create(customer)){
+            return null;
+        }
+        return customer;
     }
 
     @Override
