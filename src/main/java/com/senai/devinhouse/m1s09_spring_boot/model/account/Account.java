@@ -1,28 +1,31 @@
-package com.senai.devinhouse.m1s09_spring_boot.model;
+package com.senai.devinhouse.m1s09_spring_boot.model.account;
 
+import com.senai.devinhouse.m1s09_spring_boot.model.customer.Customer;
 import com.senai.devinhouse.m1s09_spring_boot.model.enums.AccountType;
 import com.senai.devinhouse.m1s09_spring_boot.utils.UtilGeradorId;
 import lombok.*;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.util.Objects;
+import java.util.*;
 
-@RequiredArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 public class Account implements Comparable<Account> {
 
     private Integer id = UtilGeradorId.generateSequenceIdAccount();
 
-    @NonNull
     private Customer customer;
 
-    @NonNull
     private AccountType accountType;
 
+    private final Set<AccountOperations> accountOperationsList;
+
     private Double balance = 0.0;
+
+    public Account(Customer customer, AccountType accountType) {
+        this.customer = customer;
+        this.accountType = accountType;
+        this.accountOperationsList = new HashSet<>();
+    }
 
     public boolean withdraw(Double value) {
         if (value > 0.0 && value <= this.balance) {
@@ -44,7 +47,6 @@ public class Account implements Comparable<Account> {
         if (!withdraw(value)) {
             return false;
         }
-
         return destinyAccount.deposit(value);
     }
 

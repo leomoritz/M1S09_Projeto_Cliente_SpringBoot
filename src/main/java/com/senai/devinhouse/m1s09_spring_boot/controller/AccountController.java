@@ -1,82 +1,85 @@
 package com.senai.devinhouse.m1s09_spring_boot.controller;
 
-import com.senai.devinhouse.m1s09_spring_boot.model.Account;
-import com.senai.devinhouse.m1s09_spring_boot.service.CrudService;
-
+import com.senai.devinhouse.m1s09_spring_boot.controller.dto.AccountDTO;
+import com.senai.devinhouse.m1s09_spring_boot.controller.dto.AccountOperationDTO;
+import com.senai.devinhouse.m1s09_spring_boot.controller.dto.AccountTransferDTO;
+import com.senai.devinhouse.m1s09_spring_boot.controller.forms.NewOperationForm;
+import com.senai.devinhouse.m1s09_spring_boot.controller.forms.NewTransferForm;
+import com.senai.devinhouse.m1s09_spring_boot.model.account.Account;
+import com.senai.devinhouse.m1s09_spring_boot.service.AccountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/account")
 public class AccountController {
 
-    private CrudService<Account> service;
+    private AccountService service;
 
-    public AccountController(CrudService<Account> service) {
+    public AccountController(AccountService service) {
         this.service = service;
     }
 
     /*CRUD*/
     @GetMapping("/getAccountList")
-    public ResponseEntity<Set<Account>> getAccountList() {
-        return ResponseEntity.ok().body(service.findAll());
+    public ResponseEntity<List<AccountDTO>> getAccountList() {
+        List<AccountDTO> accountDTOS = service.findAll().stream().map(AccountDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok().body(accountDTOS);
     }
 
     @GetMapping("/getAccountById/{id}")
-    public ResponseEntity<Account> getAccountById(@PathVariable Integer id) throws Exception {
-       return ResponseEntity.ok().body(service.findById(id).get());
+    public ResponseEntity<AccountDTO> getAccountById(@PathVariable Integer id) {
+        AccountDTO accountDTO = new AccountDTO(service.findById(id));
+        return ResponseEntity.ok().body(accountDTO);
     }
 
-    @PostMapping("registerAccount")
+    @GetMapping("/getAccountOperations/{id}")
+    public ResponseEntity<Set<AccountOperationDTO>> getAccountOperations(@PathVariable Integer id) {
+        Set<AccountOperationDTO> accountOperationDTOS = service.getAccountOperations(id).stream().map(AccountOperationDTO::new).collect(Collectors.toSet());
+        return ResponseEntity.ok().body(accountOperationDTOS);
+    }
+
+    @PostMapping("/registerAccount")
     public ResponseEntity<String> registerAccount(@RequestBody @Valid Account account, UriComponentsBuilder uriBuilder) {
-        Account newAccount = service.create(account);
-        URI uri = uriBuilder.path("/registerAccount").buildAndExpand(newAccount).toUri();
-        return ResponseEntity.created(uri).body("\"id\":" + "\"" + newAccount.getId() + "\"");
+        AccountDTO newAccountDTO = new AccountDTO(service.create(account));
+        URI uri = uriBuilder.path("/registerAccount").buildAndExpand(newAccountDTO).toUri();
+        return ResponseEntity.created(uri).body("\"id\":" + "\"" + newAccountDTO.getId() + "\"");
     }
 
     @PutMapping("/updateAccountById/{id}")
-    public boolean updateAccountById(@PathVariable Integer id, @RequestBody Account account) {
-        return service.update(id, account);
+    public ResponseEntity<Boolean> updateAccountById(@PathVariable Integer id, @RequestBody Account account) {
+        return ResponseEntity.ok().body(service.update(id, account));
     }
 
     @DeleteMapping("/deleteAccountById/{id}")
-    public boolean deleteAccountById(@PathVariable Integer id) {
-        return service.delete(id);
+    public ResponseEntity<Boolean> deleteAccountById(@PathVariable Integer id) {
+        return ResponseEntity.ok().body(service.delete(id));
     }
 
     /*OTHER METHODS*/
-    @PutMapping("/withdraw/{id}")
-    public boolean withdraw(@PathVariable Integer id, @RequestParam Double value) {
-        Account account = service.findById(id).get();
-        return account.withdraw(value);
+    @PostMapping("/withdraw/{id}")
+    public ResponseEntity<AccountOperationDTO> withdraw(@PathVariable Integer id, @Valid @RequestBody NewOperationForm newWithdraw) {
+        AccountOperationDTO accountOperationDTO = service.withdraw(id, newWithdraw.getValue());
+        return ResponseEntity.ok().body(accountOperationDTO);
     }
 
     @PutMapping(value = "/deposit/{id}")
-    public boolean deposit(@PathVariable Integer id, @RequestParam Double value) {
-        Account account = this.service.findById(id).get();
-        return account.deposit(value);
+    public ResponseEntity<AccountOperationDTO> deposit(@PathVariable Integer id, @Valid @RequestBody NewOperationForm newDeposit) {
+        AccountOperationDTO accountOperationDTO = service.deposit(id, newDeposit.getValue());
+        return ResponseEntity.ok().body(accountOperationDTO);
     }
 
     @PutMapping("/transferValueToOtherAccount")
-    public Set<Account> transferValueToOtherAccount(@RequestParam int idOriginAccount, int idDestinyAccount,
-                                                    double value) throws Exception {
-
-        Account originAccount = service.findById(idOriginAccount).get();
-        Account destinyAccount = service.findById(idDestinyAccount).get();
-
-        if (originAccount.transferValueToOtherAccount(destinyAccount, value)) {
-            Set<Account> accountList = new TreeSet<>();
-            accountList.add(originAccount);
-            accountList.add(destinyAccount);
-            return accountList;
-        }
-        return null;
+    public ResponseEntity<AccountTransferDTO> transferValueToOtherAccount(@Valid @RequestBody NewTransferForm newTransfer) {
+        AccountTransferDTO accountTransferDTO = service.transferValueToOtherAccount(newTransfer);
+        return ResponseEntity.ok().body(accountTransferDTO);
     }
 
 }

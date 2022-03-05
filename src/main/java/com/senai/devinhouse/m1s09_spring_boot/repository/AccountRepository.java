@@ -1,16 +1,16 @@
 package com.senai.devinhouse.m1s09_spring_boot.repository;
 
-import com.senai.devinhouse.m1s09_spring_boot.model.Account;
+import com.senai.devinhouse.m1s09_spring_boot.model.account.Account;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 @Repository
 public class AccountRepository implements CrudRepository<Account> {
 
     private static final Set<Account> REPOSITORY = new TreeSet<>();
+
+
 
     @Override
     public boolean create(Account account) {

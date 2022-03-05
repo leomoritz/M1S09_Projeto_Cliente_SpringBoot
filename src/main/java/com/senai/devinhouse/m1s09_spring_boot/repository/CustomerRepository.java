@@ -1,11 +1,9 @@
 package com.senai.devinhouse.m1s09_spring_boot.repository;
 
-import com.senai.devinhouse.m1s09_spring_boot.model.Customer;
+import com.senai.devinhouse.m1s09_spring_boot.model.customer.Customer;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 @Repository
 public class CustomerRepository implements CrudRepository<Customer> {

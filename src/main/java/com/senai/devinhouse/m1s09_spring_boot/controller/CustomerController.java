@@ -1,6 +1,6 @@
 package com.senai.devinhouse.m1s09_spring_boot.controller;
 
-import com.senai.devinhouse.m1s09_spring_boot.model.Customer;
+import com.senai.devinhouse.m1s09_spring_boot.model.customer.Customer;
 import com.senai.devinhouse.m1s09_spring_boot.service.CrudService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +27,7 @@ public class CustomerController {
 
     @GetMapping("/getCustomerById/{id}")
     public ResponseEntity<Customer> getCustomerById(@PathVariable Integer id) {
-        return ResponseEntity.ok().body(service.findById(id).get());
+        return ResponseEntity.ok().body(service.findById(id));
     }
 
     @PostMapping(value = "/registerCustomer", produces = "application/json", consumes = "application/json")

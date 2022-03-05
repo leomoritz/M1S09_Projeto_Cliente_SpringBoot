@@ -1,10 +1,11 @@
 package com.senai.devinhouse.m1s09_spring_boot.service;
 
-import com.senai.devinhouse.m1s09_spring_boot.model.Customer;
+import com.senai.devinhouse.m1s09_spring_boot.model.account.Account;
+import com.senai.devinhouse.m1s09_spring_boot.model.customer.Customer;
 import com.senai.devinhouse.m1s09_spring_boot.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -30,8 +31,8 @@ public class CustomerService implements CrudService<Customer> {
     }
 
     @Override
-    public Optional<Customer> findById(Integer id) {
-        return repository.findById(id);
+    public Customer findById(Integer id) {
+        return repository.findById(id).get();
     }
 
     @Override
