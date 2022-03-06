@@ -1,14 +1,15 @@
 package com.senai.devinhouse.m1s09_spring_boot.controller;
 
+import com.senai.devinhouse.m1s09_spring_boot.controller.dto.CustomerDTO;
+import com.senai.devinhouse.m1s09_spring_boot.controller.forms.NewCustomerForm;
 import com.senai.devinhouse.m1s09_spring_boot.model.customer.Customer;
 import com.senai.devinhouse.m1s09_spring_boot.service.CrudService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/customer")
@@ -21,31 +22,37 @@ public class CustomerController {
     }
 
     @GetMapping("/getCustomerList")
-    public ResponseEntity<Set<Customer>> getCustomerList() {
-        return ResponseEntity.ok().body(service.findAll());
+    public ResponseEntity<Set<CustomerDTO>> getCustomerList() {
+        Set<CustomerDTO> customersDto = service.findAll().stream().map(CustomerDTO::new).collect(Collectors.toSet());
+        return ResponseEntity.ok().body(customersDto);
     }
 
     @GetMapping("/getCustomerById/{id}")
-    public ResponseEntity<Customer> getCustomerById(@PathVariable Integer id) {
-        return ResponseEntity.ok().body(service.findById(id));
+    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Integer id) {
+        Customer customer = service.findById(id);
+        CustomerDTO customerDto = new CustomerDTO(customer);
+        return ResponseEntity.ok().body(customerDto);
     }
 
-    @PostMapping(value = "/registerCustomer", produces = "application/json", consumes = "application/json")
-    public ResponseEntity<String> registerCustomer(@RequestBody @Valid Customer customer, UriComponentsBuilder uriBuilder) {
-        Customer newCustomer = service.create(customer);
-        URI uri = uriBuilder.path("/registerCustomer").buildAndExpand(newCustomer).toUri();
-        return ResponseEntity.created(uri).body("\"id\":" + "\"" + newCustomer.getId() + "\"");
+    @PostMapping(value = "/registerCustomer")
+    public ResponseEntity<CustomerDTO> registerCustomer(@Valid @RequestBody NewCustomerForm customerForm) {
+        Customer customer = service.create(customerForm.converter());
+        CustomerDTO customerDTO = new CustomerDTO(customer);
+        return ResponseEntity.ok().body(customerDTO);
     }
 
     @PutMapping("/updateCustomerById/{id}")
-    public boolean updateCustomerById(@PathVariable Integer id, @RequestBody Customer customer) {
-        return service.update(id, customer);
+    public ResponseEntity<CustomerDTO> updateCustomerById(@PathVariable Integer id, @Valid @RequestBody NewCustomerForm customerForm) {
+        Customer customer = customerForm.converter();
+        service.update(id, customer);
+        CustomerDTO customerDTO = new CustomerDTO(customer);
+        return ResponseEntity.ok().body(customerDTO);
     }
 
     @DeleteMapping("/deleteCustomerById/{id}")
-    public boolean deleteCustomerById(@PathVariable Integer id) {
-        return service.delete(id);
+    public ResponseEntity<String> deleteCustomerById(@PathVariable Integer id) {
+        service.delete(id);
+        return ResponseEntity.ok().body("Customer with " + id + " successfully removed");
     }
-
 
 }

@@ -1,0 +1,371 @@
+{
+	"info": {
+		"_postman_id": "1fddc44c-7814-4287-b2f3-23b12db5e9ef",
+		"name": "DEVINHOUSE_M1S09_SpringBoot",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "registerCustomer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Leônidas Guilherme Moritz Pereira Rosa\",\r\n    \"cpf\":\"09874553979\"\r\n}\r\n\r\n{\r\n    \"name\":\"Bruna de Oliveira Rosa\",\r\n    \"cpf\":\"09988020937\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/customer/registerCustomer",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"customer",
+						"registerCustomer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "registerAccount",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"customer\":{\"id\":\"1\", \"name\":\"Leônidas Guilherme Moritz Pereira Rosa\", \"cpf\":\"09874553979\"}\r\n        ,\r\n    \"accountType\":\"CURRENT_ACCOUNT\"\r\n}\r\n\r\n{\r\n    \"customer\":{\"id\":\"2\", \"name\":\"Bruna de Oliveira Rosa\", \"cpf\":\"09988020937\"}\r\n        ,\r\n    \"accountType\":\"CURRENT_ACCOUNT\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/account/registerAccount",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"account",
+						"registerAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getCustomerList",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/customer/getCustomerList",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"customer",
+						"getCustomerList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAccountList",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/account/getAccountList",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"account",
+						"getAccountList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getCustomerById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/customer/getCustomerById/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"customer",
+						"getCustomerById",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAccountById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/account/getAccountById/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"account",
+						"getAccountById",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAccountOperations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/account/getAccountOperations/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"account",
+						"getAccountOperations",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateCustomerById",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Leônidas G. M. P. Rosa\",\r\n    \"cpf\":\"09874553979\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/customer/updateCustomerById/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"customer",
+						"updateCustomerById",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateAccountById",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idCustomer\":\"2\"\r\n        ,\r\n    \"accountType\":\"SAVINGS_ACCOUNT\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/account/updateAccountById/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"account",
+						"updateAccountById",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteCustomerById",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/customer/deleteCustomerById/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"customer",
+						"deleteCustomerById",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteAccountById",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/account/deleteAccountById/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"account",
+						"deleteAccountById",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "withdraw",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"value\":\"1000.0\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/account/withdraw/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"account",
+						"withdraw",
+						"1"
+					],
+					"query": [
+						{
+							"key": "value",
+							"value": "500.0",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deposit",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"value\":\"2000.0\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/account/deposit/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"account",
+						"deposit",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "transferValueToOtherAccount",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"originAccountId\":\"1\",\r\n    \"destinyAccountId\":\"2\",\r\n    \"value\": \"200.0\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/account/transferValueToOtherAccount",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"account",
+						"transferValueToOtherAccount"
+					],
+					"query": [
+						{
+							"key": "idOriginAccount",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "idDestinyAccount",
+							"value": "2",
+							"disabled": true
+						},
+						{
+							"key": "value",
+							"value": "500.0",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

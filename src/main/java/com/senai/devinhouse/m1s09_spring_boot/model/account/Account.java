@@ -1,5 +1,6 @@
 package com.senai.devinhouse.m1s09_spring_boot.model.account;
 
+import com.senai.devinhouse.m1s09_spring_boot.controller.dto.AccountDTO;
 import com.senai.devinhouse.m1s09_spring_boot.model.customer.Customer;
 import com.senai.devinhouse.m1s09_spring_boot.model.enums.AccountType;
 import com.senai.devinhouse.m1s09_spring_boot.utils.UtilGeradorId;
@@ -21,10 +22,16 @@ public class Account implements Comparable<Account> {
 
     private Double balance = 0.0;
 
+    public Account() {
+        this.accountOperationsList = new HashSet<>();
+        this.balance = 0.0;
+    }
+
     public Account(Customer customer, AccountType accountType) {
         this.customer = customer;
         this.accountType = accountType;
         this.accountOperationsList = new HashSet<>();
+        this.balance = 0.0;
     }
 
     public boolean withdraw(Double value) {

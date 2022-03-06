@@ -3,9 +3,11 @@ package com.senai.devinhouse.m1s09_spring_boot.service;
 import com.senai.devinhouse.m1s09_spring_boot.model.account.Account;
 import com.senai.devinhouse.m1s09_spring_boot.model.customer.Customer;
 import com.senai.devinhouse.m1s09_spring_boot.repository.CrudRepository;
+import com.senai.devinhouse.m1s09_spring_boot.service.exceptions.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -19,9 +21,7 @@ public class CustomerService implements CrudService<Customer> {
 
     @Override
     public Customer create(Customer customer) {
-        if(!repository.create(customer)){
-            return null;
-        }
+        repository.create(customer);
         return customer;
     }
 
@@ -32,16 +32,32 @@ public class CustomerService implements CrudService<Customer> {
 
     @Override
     public Customer findById(Integer id) {
-        return repository.findById(id).get();
+        Optional<Customer> customer = repository.findById(id);
+
+        if (customer.isEmpty()) {
+            throw new EntityNotFoundException("Customer with id " + id + " does not exists!");
+        }
+
+        return customer.get();
     }
 
     @Override
-    public boolean update(Integer id, Customer customer) {
-        return repository.update(id, customer);
+    public boolean update(Integer id, Customer newCustomer) {
+
+        if (newCustomer == null) {
+            throw new IllegalArgumentException("Customer cannot be empty or null!");
+        }
+
+        Customer oldCustomer = findById(id);
+
+        return repository.update(oldCustomer.getId(), newCustomer);
     }
 
     @Override
     public boolean delete(Integer id) {
-        return repository.delete(id);
+
+        Customer customer = findById(id);
+
+        return repository.delete(customer.getId());
     }
 }

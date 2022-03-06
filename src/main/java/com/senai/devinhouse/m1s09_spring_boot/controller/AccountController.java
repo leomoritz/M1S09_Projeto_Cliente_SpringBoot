@@ -3,16 +3,15 @@ package com.senai.devinhouse.m1s09_spring_boot.controller;
 import com.senai.devinhouse.m1s09_spring_boot.controller.dto.AccountDTO;
 import com.senai.devinhouse.m1s09_spring_boot.controller.dto.AccountOperationDTO;
 import com.senai.devinhouse.m1s09_spring_boot.controller.dto.AccountTransferDTO;
+import com.senai.devinhouse.m1s09_spring_boot.controller.forms.NewAccountForm;
 import com.senai.devinhouse.m1s09_spring_boot.controller.forms.NewOperationForm;
 import com.senai.devinhouse.m1s09_spring_boot.controller.forms.NewTransferForm;
 import com.senai.devinhouse.m1s09_spring_boot.model.account.Account;
 import com.senai.devinhouse.m1s09_spring_boot.service.AccountService;
+import com.senai.devinhouse.m1s09_spring_boot.service.CustomerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
-
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -47,20 +46,24 @@ public class AccountController {
     }
 
     @PostMapping("/registerAccount")
-    public ResponseEntity<String> registerAccount(@RequestBody @Valid Account account, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<AccountDTO> registerAccount(@RequestBody @Valid NewAccountForm newAccountForm) {
+        Account account = newAccountForm.converter();
         AccountDTO newAccountDTO = new AccountDTO(service.create(account));
-        URI uri = uriBuilder.path("/registerAccount").buildAndExpand(newAccountDTO).toUri();
-        return ResponseEntity.created(uri).body("\"id\":" + "\"" + newAccountDTO.getId() + "\"");
+        return ResponseEntity.ok().body(newAccountDTO);
     }
 
     @PutMapping("/updateAccountById/{id}")
-    public ResponseEntity<Boolean> updateAccountById(@PathVariable Integer id, @RequestBody Account account) {
-        return ResponseEntity.ok().body(service.update(id, account));
+    public ResponseEntity<AccountDTO> updateAccountById(@PathVariable Integer id, @Valid @RequestBody NewAccountForm newAccountForm) {
+        Account account = newAccountForm.converter();
+        service.update(id, account);
+        AccountDTO accountDTO = new AccountDTO(account);
+        return ResponseEntity.ok().body(accountDTO);
     }
 
     @DeleteMapping("/deleteAccountById/{id}")
-    public ResponseEntity<Boolean> deleteAccountById(@PathVariable Integer id) {
-        return ResponseEntity.ok().body(service.delete(id));
+    public ResponseEntity<String> deleteAccountById(@PathVariable Integer id) {
+        service.delete(id);
+        return ResponseEntity.ok().body("Account with id " + id + " successfully removed");
     }
 
     /*OTHER METHODS*/
